@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 
-import productImage from "../assets/washing-machine-2.jpg";
+import productImage from "../assets/placeholder-image.jpg";
 import { useEffect, useState } from "react";
 import { getSingleProductData } from "../Api";
 
@@ -20,7 +20,7 @@ const SingleProduct = () => {
   }, [id]);
 
   // const imgsrc= productDetails?.images[0]?.src
-  console.log(productDetails?.images)
+  // console.log(productDetails?.images)
   return (
     <>
       <div className="container my-5">
@@ -29,7 +29,9 @@ const SingleProduct = () => {
             <div className="card">
               <img
                 className="card-img-top"
-                src={productDetails?.images[0]?.src}
+                src={productDetails?.images && productDetails.images.length > 0 
+      ? productDetails.images[0].src 
+      : productImage}
                 alt={productDetails.name}
               />
             </div>
@@ -51,6 +53,7 @@ const SingleProduct = () => {
                     ? "line-through"
                     : "none",
                   color: "red",
+                  "margin-right": "10px"
                 }}
               >
                 ${productDetails.regular_price || productDetails.price}
@@ -58,7 +61,7 @@ const SingleProduct = () => {
               <span
                 className="card-text"
                 style={{
-                  display: productDetails.sale_price ? "block" : "none",
+                  display: productDetails.sale_price ? "unset" : "none"
                 }}
               >
                 ${productDetails.sale_price}
@@ -66,7 +69,7 @@ const SingleProduct = () => {
             </div>
             <div className="mb-4">
               <h5>
-                Category: {productDetails.categories.map((category) => category.name).join(", ")}
+                Category: {productDetails?.categories?.map((singleCategory) => singleCategory.name).join(", ")}
               </h5>
             </div>
             <button className="btn btn-primary mt-4">Add to Cart</button>

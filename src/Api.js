@@ -7,6 +7,27 @@ const CONSUMER_SECRET = "cs_7d5d6987333d91fdc1b186b16e39e9f4394e7722"
 const PROJECT_URL = "https://woocommerceapp.anoy369.com/"
 const API_URL = PROJECT_URL + "wp-json/wc/v3"
 
+let loadingCount = 0;
+const LOADER_EVENT_NAME = 'api_loading_change';
+const listeners = [];
+
+// Function to notify all listeners of loader state change
+function notifyLoadingStateChange() {
+  const isLoading = loadingCount > 0;
+  listeners.forEach((callback) => callback(isLoading));
+}
+
+// Function to add listener
+export function onLoadingChange(callback) {
+  listeners.push(callback);
+  return () => {
+    const index = listeners.indexOf(callback);
+    if (index > -1) {
+      listeners.splice(index, 1);
+    }
+  };
+}
+
 // Function to generate OAuth signature
 const generateOAuthSignature = (url, method = 'GET', params = {}) => {
   const nonce = Math.random().toString(36).substring(2);
@@ -39,6 +60,33 @@ const generateOAuthSignature = (url, method = 'GET', params = {}) => {
 const api = axios.create({
     baseURL : API_URL
 })
+
+// Add interceptors to manage loader state
+api.interceptors.request.use(
+  (config) => {
+    loadingCount++;
+    notifyLoadingStateChange();
+    return config;
+  },
+  (error) => {
+    loadingCount--;
+    notifyLoadingStateChange();
+    return Promise.reject(error);
+  }
+);
+
+api.interceptors.response.use(
+  (response) => {
+    loadingCount--;
+    notifyLoadingStateChange();
+    return response;
+  },
+  (error) => {
+    loadingCount--;
+    notifyLoadingStateChange();
+    return Promise.reject(error);
+  }
+);
 
 // Get all products from woocomerce store
 export const getAllProducts = async() => {
