@@ -5,7 +5,7 @@ const Footer = () => {
     <>
         <footer
           className="text-center text-lg-start text-white"
-          style={{"background-color": "#3e4551"}}
+          style={{"backgroundColor": "#3e4551"}}
         >
           <div className="container p-4 pb-0">
             <section className="">
@@ -141,7 +141,7 @@ const Footer = () => {
           </div>
           <div
             className="text-center p-3"
-            style={{"background-color": "rgba(0, 0, 0, 0.2)"}}
+            style={{"backgroundColor": "rgba(0, 0, 0, 0.2)"}}
           >
             © 2025 Copyright:
             <Link className="text-white" to="https://anoy369.com/">

@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom"
-const NavBar = () => {
+const NavBar = ({cartItem}) => {
     return <>
         <nav className="navbar navbar-expand-lg navbar-light">
             <Link className="navbar-brand" to="/">My Store</Link>
@@ -17,7 +17,7 @@ const NavBar = () => {
                 <li className="nav-item">
                 <Link to="/cart" className="nav-link">
                     Cart
-                    <span className="badge pill bg-secondary">0</span>
+                    <span className="badge pill bg-secondary">{cartItem.length}</span>
                 </Link>
                 </li>
                 <li className="nav-item">

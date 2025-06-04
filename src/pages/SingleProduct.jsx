@@ -4,7 +4,7 @@ import productImage from "../assets/placeholder-image.jpg";
 import { useEffect, useState } from "react";
 import { getSingleProductData } from "../Api";
 
-const SingleProduct = () => {
+const SingleProduct = ({onAddToCart}) => {
   const { id } = useParams();
   const [productDetails, setProductDetails] = useState({});
 
@@ -12,15 +12,24 @@ const SingleProduct = () => {
     const fetchSingleProduct = async () => {
       const data = await getSingleProductData(id);
       setProductDetails(data);
-      
-      console.log(data);
     };
 
     fetchSingleProduct();
   }, [id]);
 
-  // const imgsrc= productDetails?.images[0]?.src
-  // console.log(productDetails?.images)
+  const renderProductPrice = (product) => {
+    if(product.sale_price){
+      return <>
+        <span className="text-muted text-text-decoration-line-through">${product.regular_price}</span>
+        <span className="text-danger">${product.sale_price}</span>
+      </>
+    }
+    return <>
+      ${product.regular_price || product.price }
+    </>
+  }
+
+
   return (
     <>
       <div className="container my-5">
@@ -46,14 +55,14 @@ const SingleProduct = () => {
             ></div>
             <div className="mb-4">
               <h5>Price:</h5>
-              <span
+              {/* <span
                 className="card-text"
                 style={{
                   textDecoration: productDetails.sale_price
                     ? "line-through"
                     : "none",
                   color: "red",
-                  "margin-right": "10px"
+                  "marginRight": "10px"
                 }}
               >
                 ${productDetails.regular_price || productDetails.price}
@@ -65,14 +74,15 @@ const SingleProduct = () => {
                 }}
               >
                 ${productDetails.sale_price}
-              </span>
+              </span> */}
+              <p className="card-text">{renderProductPrice(productDetails)}</p>
             </div>
             <div className="mb-4">
               <h5>
                 Category: {productDetails?.categories?.map((singleCategory) => singleCategory.name).join(", ")}
               </h5>
             </div>
-            <button className="btn btn-primary mt-4">Add to Cart</button>
+            <button className="btn btn-primary mt-4" onClick={ () => onAddToCart(SingleProduct) }>Add to Cart</button>
           </div>
         </div>
       </div>
