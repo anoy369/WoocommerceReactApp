@@ -7,6 +7,10 @@ const CONSUMER_SECRET = "cs_7d5d6987333d91fdc1b186b16e39e9f4394e7722"
 const PROJECT_URL = "https://woocommerceapp.anoy369.com/"
 const API_URL = PROJECT_URL + "wp-json/wc/v3"
 
+const WP_USER_API_URL = `${PROJECT_URL}wp-json/wp/v2/users`
+const username = 'admin';
+const appPassword = '-6s3HKr2v8Lucqc';
+
 let loadingCount = 0;
 const LOADER_EVENT_NAME = 'api_loading_change';
 const listeners = [];
@@ -118,4 +122,22 @@ export const getSingleProductData = async(productID) => {
     } catch(error) {
         console.log(error)
     }
+}
+
+//Register user api
+export const registerStoreUser = async(userInfo) => {
+
+  try{
+    const response = await api.post( WP_USER_API_URL, userInfo, {
+      headers: {
+        "Authorization": "Basic " + btoa("admin:-6s3HKr2v8Lucqc")
+      }
+    })
+
+    return response.data
+
+  } catch(error){
+    console.log(error)
+  }
+
 }

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import {registerStoreUser} from "../Api"
+import { toast } from "react-toastify";
 
 const Auth = () => {
   const [loginData, setLoginData] = useState({
@@ -45,17 +47,36 @@ const Auth = () => {
   };
 
   // Signup form submition
-  const handleSignupFormSubmit = (event) => {
-    event.preventDefault();
-    console.log(signupData);
+  const handleSignupFormSubmit = async (event) => {
+  event.preventDefault();
 
+  try {
+    const newUser = await registerStoreUser({
+      name: signupData.signup_name,
+      username: signupData.signup_username,
+      email: signupData.signup_email,
+      password: signupData.signup_password
+    });
+
+    // Only runs if successful
     setSignupData({
       signup_name: "",
       signup_email: "",
       signup_username: "",
       signup_password: "",
     });
-  };
+
+    if(newUser){
+      toast.success("User registered successfully!");
+    } else {
+      toast.error("Something went Wrong!!");
+    }
+
+  } catch (error) {
+    console.log("Caught error:", error.message);
+    toast.error(error.message);
+  }
+};
 
   return (
     <>
