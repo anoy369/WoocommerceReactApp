@@ -141,3 +141,15 @@ export const registerStoreUser = async(userInfo) => {
   }
 
 }
+
+
+// Login User API 
+export const loginUser = async(userInfo) => {
+  try{
+    const response = await api.post(`${PROJECT_URL}wp-json/jwt-auth/v1/token`, userInfo)
+
+    return response.data
+  }catch(error){
+    console.log(error)
+  }
+}

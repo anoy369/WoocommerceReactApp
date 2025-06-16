@@ -1,8 +1,11 @@
 import { useState } from "react";
-import {registerStoreUser} from "../Api"
+import {registerStoreUser, loginUser} from "../Api"
 import { toast } from "react-toastify";
+import {useNavigate} from "react-router-dom"
 
 const Auth = () => {
+  const navigate = useNavigate()
+
   const [loginData, setLoginData] = useState({
     login_username: "",
     login_password: "",
@@ -26,14 +29,31 @@ const Auth = () => {
   };
 
   // Login form submition
-  const handleLoginFormSubmit = (event) => {
+  const handleLoginFormSubmit = async(event) => {
     event.preventDefault();
-    console.log(loginData);
 
-    setLoginData({
-      login_username: "",
-      login_password: "",
-    });
+    try{
+      const response = await loginUser({
+        username: loginData.login_username,
+        password: loginData.login_password
+      })
+
+      console.log(response)
+
+      setLoginData({
+        login_username: "",
+        login_password: "",
+      });
+
+      localStorage.setItem("auth_token", response.token)
+      toast.success("Logged in successfully")
+
+      navigate("/checkout")
+    }catch(error){
+      console.log(error)
+      toast.error("Invalid login details")
+    }
+    
   };
 
   // Signup Form OnChange function
