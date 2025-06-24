@@ -27,9 +27,22 @@ function App() {
 
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")))
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
   // Subscribe to loader changes
   useEffect(() => {
     const unsubscribe = onLoadingChange(setLoading);
+
+    const token = localStorage.getItem("auth_token")
+
+    if (token){
+      setUserLoggedinStatus(true)
+    }
+
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || []
+
+    setCart(cartItems)
+
     return () => {
       unsubscribe();
     };
@@ -73,10 +86,21 @@ function App() {
       toast.success("Product has been removed from the Cart!")
     }
   }
+
+  // Set login status after login 
+  const setUserLoggedinStatus = (status) => {
+    setIsAuthenticated(status)
+  }
+
+  // User Logout 
+  const setUserLogout = () => {
+    localStorage.removeItem("auth_token")
+    setUserLoggedinStatus(false)
+  }
   return (
     <>
       <Router>
-        <NavBar cartItem={cart} />
+        <NavBar setUserLogout={setUserLogout} isAuthenticated={isAuthenticated} cartItem={cart} />
         <div className="container h-100">
           <ToastContainer />
           {loading && <Loader />}
@@ -86,7 +110,7 @@ function App() {
             <Route path="/my-account" element={<MyAccount />} />
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />
-            <Route path="/login" element={<Auth />} />
+            <Route path="/login" element={<Auth isAuthenticated={setUserLoggedinStatus} />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/product/:id" element={<SingleProduct onAddToCart={ addProductsToCart } />} />
           </Routes>

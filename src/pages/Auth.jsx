@@ -3,7 +3,7 @@ import {registerStoreUser, loginUser} from "../Api"
 import { toast } from "react-toastify";
 import {useNavigate} from "react-router-dom"
 
-const Auth = () => {
+const Auth = ({isAuthenticated}) => {
   const navigate = useNavigate()
 
   const [loginData, setLoginData] = useState({
@@ -47,7 +47,7 @@ const Auth = () => {
 
       localStorage.setItem("auth_token", response.token)
       toast.success("Logged in successfully")
-
+      isAuthenticated(true)
       navigate("/checkout")
     }catch(error){
       console.log(error)
