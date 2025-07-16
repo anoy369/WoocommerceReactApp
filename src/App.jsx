@@ -97,6 +97,12 @@ function App() {
     localStorage.removeItem("auth_token")
     setUserLoggedinStatus(false)
   }
+
+  const clearCartItem = () =>{
+    localStorage.removeItem("cart")
+    setCart([])
+  }
+
   return (
     <>
       <Router>
@@ -111,7 +117,7 @@ function App() {
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />
             <Route path="/login" element={<Auth isAuthenticated={setUserLoggedinStatus} />} />
-            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout" element={<Checkout clearCartItem={clearCartItem} />} />
             <Route path="/product/:id" element={<SingleProduct onAddToCart={ addProductsToCart } />} />
           </Routes>
         </div>

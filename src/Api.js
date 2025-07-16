@@ -153,3 +153,47 @@ export const loginUser = async(userInfo) => {
     console.log(error)
   }
 }
+
+// Create an order in woocommerce 
+
+export const createAnOrder = async(userInfo) => {
+  try{
+
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || []
+
+    // Check cart items
+    if(!cartItems.length){
+      console.log("Cart is Empty")
+      return false
+    }
+
+    const lineItems = cartItems.map((item) => ({
+      product_id: item.id,
+      qunatity: item.qunatity
+    }))
+
+    const data = {
+      ...userInfo,
+      line_items: lineItems
+    }
+
+    const url = `${API_URL}/orders`
+
+    const oauthParams = generateOAuthSignature(url, "POST")
+
+    // Generate oauth Header
+    const oauthHeader = object.keys(oauthParams)
+    .map( (key) => `${key}=${encodeURIComponent(oauthParams[key])}`)
+    .join(", ")
+
+    const response = await api.post("/orders", data, {
+      headers: {
+        "Authorization": `Oauth ${oauthHeader}`
+      }
+    })
+
+    return response.data
+  }catch(error){
+    console.log(error)
+  }
+}
