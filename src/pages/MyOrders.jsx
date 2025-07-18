@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { getOrdersByUserId, getSingleOrderData } from "../Api";
+import { getOrdersByUserId, getSingleOrderData, deleteOrderById } from "../Api";
 
-const MyOrders = ({ loggedInUserData}) => {
+const MyOrders = ({ loggedInUserData, setLoading}) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [orderItems, setOrderItems] = useState([]);
   const [singleOrderData, setSingleOrderData] = useState({})
@@ -33,10 +33,11 @@ const MyOrders = ({ loggedInUserData}) => {
     }
   }, []);
 
+  //Handle Order Page refresh
   const handleRefreshOrders = () => {
-    const orderItems = JSON.parse(localStorage.getItem("orderItems"))
-    if(orderItems){
-      setOrderItems(orderItems)
+    if(orderItems){           
+      localStorage.removeItem("orderItems")
+      fetchAllorders()
     } else {
       fetchAllorders()
     }
@@ -49,6 +50,21 @@ const MyOrders = ({ loggedInUserData}) => {
     console.log(response)
     setSingleOrderData(response)
     setShowDetailsModal(true)
+    } catch (error) {
+      console.log(error)
+    }finally{
+
+    }
+  }
+
+  //Handle Order Delete 
+  const deleteSingleOrderData = async(orderID) => {
+    try {
+      if(window.confirm("Are you sure you want to DELETE this order?")){
+        const response = await deleteOrderById(orderID)
+        console.log(response)
+        fetchAllorders()
+      }
     } catch (error) {
       console.log(error)
     }finally{
@@ -69,7 +85,7 @@ const MyOrders = ({ loggedInUserData}) => {
                 <thead>
                   <tr>
                     <th>Order ID</th>
-                    <th>Date</th>
+                    <th>Date(M/D/Y)</th>
                     <th>Status</th>
                     <th>Total</th>
                     <th>Items</th>
@@ -85,9 +101,8 @@ const MyOrders = ({ loggedInUserData}) => {
                           singleOrder.date_created
                         ).toLocaleDateString()}
                       </td>
-                      <td>
-                        {singleOrder.status.charAt(0).toUpperCase() +
-                          singleOrder.status.slice(1)}
+                      <td className="text-capitalize">
+                        {singleOrder.status}
                       </td>
                       <td>
                         {singleOrder.currency_symbol} {singleOrder.total}
@@ -96,7 +111,7 @@ const MyOrders = ({ loggedInUserData}) => {
                         <ul>
                           {singleOrder.line_items.map((item) => (
                             <li key={item.id}>
-                              {item.name} ({item.quantity})
+                              <span><img className="rounded img-responsive w-25" src={item.image.src}/></span>{item.name} ({item.quantity})
                             </li>
                           ))}
                         </ul>
@@ -108,7 +123,7 @@ const MyOrders = ({ loggedInUserData}) => {
                         >
                           View
                         </button>
-                        <button className="btn btn-danger">Delete</button>
+                        {singleOrder.status == "completed" ? (<button className="btn btn-danger" onClick={()=> deleteSingleOrderData(singleOrder.id)}>Delete</button>) : ""}
                       </td>
                     </tr>
                   ))}
@@ -142,9 +157,9 @@ const MyOrders = ({ loggedInUserData}) => {
                     <strong>Order ID:</strong> {singleOrderData.id}
                   </p>
                   <p>
-                    <strong>Date:</strong> {new Date(singleOrderData.currency_symbol).toLocaleDateString}
+                    <strong>Date(M/D/Y):</strong> {new Date(singleOrderData.date_created).toLocaleDateString()}
                   </p>
-                  <p>
+                  <p className="text-capitalize">
                     <strong>Status:</strong> {singleOrderData.status}
                   </p>
                   <p>

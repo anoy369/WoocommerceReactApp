@@ -254,3 +254,25 @@ export const getSingleOrderData = async(orderId) => {
     console.log(error)
   }
 }
+
+// Delete Order by Order Id
+export const deleteOrderById = async(orderId) => {
+  try{
+    const url = `${API_URL}/orders/${orderId}`
+
+    const oauthParams = generateOAuthSignature(url, "DELETE")
+    
+    // Generate OAuth Header
+    const oauthHeader = Object.keys(oauthParams).map( (key) => `${key}="${ encodeURIComponent(oauthParams[key]) }"` ).join(", ")
+
+    const response = await api.delete(`/orders/${orderId}`, {
+      headers: {
+        Authorization: `OAuth ${oauthHeader}`
+      }
+    })
+
+    return response.data
+  } catch(error){
+    console.log(error)
+  }
+}
