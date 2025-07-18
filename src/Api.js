@@ -197,3 +197,18 @@ export const createAnOrder = async(userInfo) => {
     console.log(error)
   }
 }
+
+//To get User Data
+export const getLoggedInUserData = async(token) => {
+  try {
+    const response = await api.get(`${WP_USER_API_URL}/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    return response.data
+  } catch (error) {
+    console.log(error)
+  }
+}

@@ -3,10 +3,13 @@ import { createAnOrder } from "../Api";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const Checkout = ({clearCartItem}) => {
+const Checkout = ({clearCartItem, loggedInUserData}) => {
   const navigate = useNavigate()
 
+  const userData = JSON.parse(loggedInUserData) || {}
+
   const [checkoutData, setCheckoutData] = useState({
+    customer_id: userData.id || "",
     payment_details: {
       method_id: "bacs",
       method_title: "Cash on Delivery",
@@ -21,7 +24,7 @@ const Checkout = ({clearCartItem}) => {
       state: "",
       postcode: "",
       country: "",
-      email: "",
+      email: userData.email || "",
       phone: "",
     },
   });

@@ -24,10 +24,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [loading, setLoading] = useState(false);
-
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")))
-
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [loggedInUserData, setLoggedInUserData] = useState({})
 
   // Subscribe to loader changes
   useEffect(() => {
@@ -40,8 +39,10 @@ function App() {
     }
 
     const cartItems = JSON.parse(localStorage.getItem("cart")) || []
-
     setCart(cartItems)
+
+    const userData = localStorage.getItem("user_data")
+    setLoggedInUserData(userData)
 
     return () => {
       unsubscribe();
@@ -95,6 +96,7 @@ function App() {
   // User Logout 
   const setUserLogout = () => {
     localStorage.removeItem("auth_token")
+    localStorage.removeItem("user_data")
     setUserLoggedinStatus(false)
   }
 
@@ -117,7 +119,7 @@ function App() {
             <Route path="/my-orders" element={<MyOrders />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />
             <Route path="/login" element={<Auth isAuthenticated={setUserLoggedinStatus} />} />
-            <Route path="/checkout" element={<Checkout clearCartItem={clearCartItem} />} />
+            <Route path="/checkout" element={<Checkout loggedInUserData={loggedInUserData} clearCartItem={clearCartItem} />} />
             <Route path="/product/:id" element={<SingleProduct onAddToCart={ addProductsToCart } />} />
           </Routes>
         </div>

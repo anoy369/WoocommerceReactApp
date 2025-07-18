@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {registerStoreUser, loginUser} from "../Api"
+import {registerStoreUser, loginUser, getLoggedInUserData} from "../Api"
 import { toast } from "react-toastify";
 import {useNavigate} from "react-router-dom"
 
@@ -48,7 +48,20 @@ const Auth = ({isAuthenticated}) => {
       localStorage.setItem("auth_token", response.token)
       toast.success("Logged in successfully")
       isAuthenticated(true)
-      navigate("/checkout")
+
+      // Get User Data
+      const loggedInUserData = {}
+      const userData =  await getLoggedInUserData(response.token)
+      console.log(userData)
+
+      loggedInUserData.id = userData.id
+      loggedInUserData.name = userData.name
+      loggedInUserData.email = response.user_email
+      loggedInUserData.username = response.user_nicename
+
+      localStorage.setItem("user_data", JSON.stringify(loggedInUserData))
+
+      navigate("/")
     }catch(error){
       console.log(error)
       toast.error("Invalid login details")
