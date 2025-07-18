@@ -3,7 +3,7 @@ import {registerStoreUser, loginUser, getLoggedInUserData} from "../Api"
 import { toast } from "react-toastify";
 import {useNavigate} from "react-router-dom"
 
-const Auth = ({isAuthenticated}) => {
+const Auth = ({isAuthenticated, setLoggedInUserData}) => {
   const navigate = useNavigate()
 
   const [loginData, setLoginData] = useState({
@@ -60,7 +60,8 @@ const Auth = ({isAuthenticated}) => {
       loggedInUserData.username = response.user_nicename
 
       localStorage.setItem("user_data", JSON.stringify(loggedInUserData))
-
+      setLoggedInUserData(JSON.stringify(loggedInUserData))
+      
       navigate("/")
     }catch(error){
       console.log(error)

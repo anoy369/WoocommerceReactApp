@@ -1,4 +1,7 @@
-const MyAccount = () => {
+const MyAccount = ({loggedInUserData}) => {
+
+  const userdata = JSON.parse(loggedInUserData)
+
   return (
     <>
       <div className="container">
@@ -12,9 +15,8 @@ const MyAccount = () => {
               <div className="col-sm-10">
                 <input
                   type="text"
-                  id="formName"
                   className="form-control"
-                  value="John Doe"
+                  value={userdata.name}
                   readOnly
                 />
               </div>
@@ -27,9 +29,8 @@ const MyAccount = () => {
               <div className="col-sm-10">
                 <input
                   type="email"
-                  id="formEmail"
                   className="form-control"
-                  value="johndoe@example.com"
+                  value={userdata.email}
                   readOnly
                 />
               </div>
@@ -42,9 +43,8 @@ const MyAccount = () => {
               <div className="col-sm-10">
                 <input
                   type="text"
-                  id="formUsername"
                   className="form-control"
-                  value="johndoe"
+                  value={userdata.username}
                   readOnly
                 />
               </div>
