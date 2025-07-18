@@ -236,3 +236,21 @@ export const getOrdersByUserId = async(userid) => {
     console.log(error)
   }
 }
+
+// Get Single Order Data
+export const getSingleOrderData = async(orderId) => {
+  try{
+
+    const url = `${API_URL}/orders/${orderId}`
+
+    const oauthParams = generateOAuthSignature(url)
+
+    const response = await api.get(`/orders/${orderId}`, {
+      params: oauthParams
+    })
+
+    return response.data
+  } catch(error){
+    console.log(error)
+  }
+}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { getOrdersByUserId } from "../Api";
+import { getOrdersByUserId, getSingleOrderData } from "../Api";
 
-const MyOrders = ({ loggedInUserData, setLoading }) => {
+const MyOrders = ({ loggedInUserData}) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [orderItems, setOrderItems] = useState([]);
+  const [singleOrderData, setSingleOrderData] = useState({})
 
   const fetchAllorders = async () => {
     setLoading(true);
@@ -34,7 +35,6 @@ const MyOrders = ({ loggedInUserData, setLoading }) => {
 
   const handleRefreshOrders = () => {
     const orderItems = JSON.parse(localStorage.getItem("orderItems"))
-
     if(orderItems){
       setOrderItems(orderItems)
     } else {
@@ -42,6 +42,19 @@ const MyOrders = ({ loggedInUserData, setLoading }) => {
     }
   }
 
+  //Handle single product view button
+  const getSingleOrderInformation = async(orderID) => {
+    try {
+      const response = await getSingleOrderData(orderID)
+    console.log(response)
+    setSingleOrderData(response)
+    setShowDetailsModal(true)
+    } catch (error) {
+      console.log(error)
+    }finally{
+
+    }
+  }
   return (
     <>
       <div className="container">
@@ -91,7 +104,7 @@ const MyOrders = ({ loggedInUserData, setLoading }) => {
                       <td>
                         <button
                           className="btn btn-info me-2"
-                          onClick={() => setShowDetailsModal(true)}
+                          onClick={() => getSingleOrderInformation(singleOrder.id)}
                         >
                           View
                         </button>
@@ -126,23 +139,26 @@ const MyOrders = ({ loggedInUserData, setLoading }) => {
                 </div>
                 <div className="modal-body">
                   <p>
-                    <strong>Order ID:</strong> 12345
+                    <strong>Order ID:</strong> {singleOrderData.id}
                   </p>
                   <p>
-                    <strong>Date:</strong> 12/30/2024
+                    <strong>Date:</strong> {new Date(singleOrderData.currency_symbol).toLocaleDateString}
                   </p>
                   <p>
-                    <strong>Status:</strong> Completed
+                    <strong>Status:</strong> {singleOrderData.status}
                   </p>
                   <p>
-                    <strong>Total:</strong> $50.00
+                    <strong>Total:</strong> {singleOrderData.currency_symbol}{singleOrderData.total}
                   </p>
                   <p>
                     <strong>Items:</strong>
                   </p>
                   <ul>
-                    <li>Item 1 (x2)</li>
-                    <li>Item 2 (x1)</li>
+                    {singleOrderData.line_items.map((item) => (
+                            <li key={item.id}>
+                              {item.name} ({item.quantity})
+                            </li>
+                          ))}
                   </ul>
                 </div>
                 <div className="modal-footer">
