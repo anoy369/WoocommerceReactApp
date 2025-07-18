@@ -182,13 +182,13 @@ export const createAnOrder = async(userInfo) => {
     const oauthParams = generateOAuthSignature(url, "POST")
 
     // Generate oauth Header
-    const oauthHeader = object.keys(oauthParams)
+    const oauthHeader = Object.keys(oauthParams)
     .map( (key) => `${key}=${encodeURIComponent(oauthParams[key])}`)
     .join(", ")
 
     const response = await api.post("/orders", data, {
       headers: {
-        "Authorization": `Oauth ${oauthHeader}`
+        Authorization: `OAuth ${oauthHeader}`
       }
     })
 
