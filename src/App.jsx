@@ -96,7 +96,7 @@ function App() {
   // User Logout 
   const setUserLogout = () => {
     localStorage.removeItem("auth_token")
-    localStorage.removeItem("user_data")
+    localStorage.removeItem("user_data") 
     localStorage.removeItem("orderItems")
     setUserLoggedinStatus(false)
   }
