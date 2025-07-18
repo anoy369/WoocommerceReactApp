@@ -212,3 +212,27 @@ export const getLoggedInUserData = async(token) => {
     console.log(error)
   }
 }
+
+/// Fetch all Orders by User Id
+export const getOrdersByUserId = async(userid) => {
+
+  try{
+
+    const url = `${API_URL}/orders`
+
+    const oauthParams = generateOAuthSignature(url, "GET", {
+      customer: userid
+    })
+
+    const response = await api.get("/orders", {
+      params: {
+        ...oauthParams,
+        customer: userid
+      }
+    })
+
+    return response.data
+  } catch(error){
+    console.log(error)
+  }
+}

@@ -116,7 +116,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart onRemoveProduct={removeItemsFromCart} cart={cart} />} />
             <Route path="/my-account" element={<MyAccount loggedInUserData={loggedInUserData} />} />
-            <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/my-orders" element={<MyOrders setLoading={setLoading} loggedInUserData={loggedInUserData} />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />
             <Route path="/login" element={<Auth setLoggedInUserData={setLoggedInUserData} isAuthenticated={setUserLoggedinStatus} />} />
             <Route path="/checkout" element={<Checkout loggedInUserData={loggedInUserData} clearCartItem={clearCartItem} />} />
