@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getOrdersByUserId, getSingleOrderData, deleteOrderById } from "../Api";
+import swal from 'sweetalert';
 
 const MyOrders = ({ loggedInUserData, setLoading}) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -58,13 +59,27 @@ const MyOrders = ({ loggedInUserData, setLoading}) => {
   }
 
   //Handle Order Delete 
-  const deleteSingleOrderData = async(orderID) => {
+  const deleteSingleOrderData = (orderID) => {
     try {
-      if(window.confirm("Are you sure you want to DELETE this order?")){
-        const response = await deleteOrderById(orderID)
-        console.log(response)
-        fetchAllorders()
-      }
+      swal({
+        title: "Are you sure?",
+        text: "Are you sure you want to DELETE this order?",
+        icon: "warning",
+        dangerMode: true,
+        buttons: true
+      })
+      .then(async(willDelete) => {
+        setLoading(true)
+        if (willDelete) {
+          const response = await deleteOrderById(orderID)
+          console.log(response)
+          fetchAllorders()
+          setLoading(false)
+          swal("Deleted!", "Your order has been deleted successfully", "success");
+        } else {
+          setLoading(false)
+        }
+      });
     } catch (error) {
       console.log(error)
     }finally{
