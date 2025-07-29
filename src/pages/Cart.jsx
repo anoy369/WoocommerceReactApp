@@ -3,7 +3,7 @@ import SingleProduct from "./SingleProduct";
 import { useNavigate } from "react-router-dom";
 import productImage from "../assets/placeholder-image.jpg";
 
-const Cart = ({onRemoveProduct, cart}) => {
+const Cart = ({onRemoveProduct, cart, isAuthenticated}) => {
 
   const [cartItems, setCartItem] = useState(cart)
   const navigate = useNavigate();
@@ -16,7 +16,12 @@ const Cart = ({onRemoveProduct, cart}) => {
 
 
   const goToCheckoutPage = () => {
-    navigate("/checkout")
+    if(isAuthenticated){
+      navigate("/checkout")
+    } {
+      navigate("/login")
+    }
+    
   }
 
   const renderProductPrice = (product) => {

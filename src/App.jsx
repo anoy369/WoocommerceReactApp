@@ -115,7 +115,7 @@ function App() {
           {loading && <Loader />}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/cart" element={<Cart onRemoveProduct={removeItemsFromCart} cart={cart} />} />
+            <Route path="/cart" element={<Cart isAuthenticated={isAuthenticated} onRemoveProduct={removeItemsFromCart} cart={cart} />} />
             <Route path="/my-account" element={<MyAccount loggedInUserData={loggedInUserData} />} />
             <Route path="/my-orders" element={<MyOrders setLoading={setLoading} loggedInUserData={loggedInUserData} />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />
