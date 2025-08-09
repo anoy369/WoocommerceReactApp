@@ -38,8 +38,8 @@ function App() {
       setUserLoggedinStatus(true)
     }
 
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || []
-    setCart(cartItems)
+    // const cartItems = JSON.parse(localStorage.getItem("cart")) || []
+    // setCart(cartItems)
 
     const userData = localStorage.getItem("user_data")
     setLoggedInUserData(userData)
@@ -115,7 +115,7 @@ function App() {
           {loading && <Loader />}
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/cart" element={<Cart isAuthenticated={isAuthenticated} onRemoveProduct={removeItemsFromCart} cart={cart} />} />
+            <Route path="/cart" element={<Cart isAuthenticated={isAuthenticated} onRemoveProduct={removeItemsFromCart} cart={cart} setCart={setCart}/>} />
             <Route path="/my-account" element={<MyAccount loggedInUserData={loggedInUserData} />} />
             <Route path="/my-orders" element={<MyOrders setLoading={setLoading} loggedInUserData={loggedInUserData} />} />
             <Route path="/products" element={<Products onAddToCart={ addProductsToCart } />} />

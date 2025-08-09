@@ -32,7 +32,7 @@ const Products = ( {onAddToCart} ) => {
                   src={singleProduct.images[0].src}
                   alt={singleProduct.name}
                 />
-                <div className="card-body">
+                <div className="card-body text-center">
                   <h5
                     className="card-title"
                     style={{ cursor: "pointer" }}
@@ -40,30 +40,32 @@ const Products = ( {onAddToCart} ) => {
                   >
                     {singleProduct.name}
                   </h5>
-                  <p
-                    className="card-text"
+                  <div className="d-flex align-items-center justify-content-center">
+                  <span
+                    className="card-text  fw-bold"
                     style={{
                       textDecoration: singleProduct.sale_price
                         ? "line-through"
                         : "none",
+                        color: singleProduct.sale_price
+                        ? "red"
+                        : "none",
+                        marginRight: singleProduct.sale_price
+                        ? "10px"
+                        : "none",
                     }}
                   >
                     ${singleProduct.regular_price || singleProduct.price}
-                  </p>
-                  <p
-                    className="card-text"
+                  </span>
+                  <span
+                    className="card-text fw-bold"
                     style={{
                       display: singleProduct.sale_price ? "block" : "none",
                     }}
                   >
                     ${singleProduct.sale_price}
-                  </p>
-                  <p
-                    className="card-text"
-                    dangerouslySetInnerHTML={{
-                      __html: singleProduct.short_description,
-                    }}
-                  ></p>
+                  </span>
+                  </div>
                   <p className="card-text">
                     Category:{" "}
                     {singleProduct.categories
