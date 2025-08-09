@@ -100,13 +100,28 @@ export const getAllProducts = async() => {
         const response = await api.get("/products", {
             params: oauthParams
         })
-
         return response.data
-
     }catch(error){
         console.log(error)
     }
 }
+
+// Get all featured products from WooCommerce store
+export const getFeaturedProducts = async () => {
+  try {
+    const url = `${API_URL}/products`;
+    const oauthParams = generateOAuthSignature(url, { featured: true }); // Include 'featured' in params for signature
+
+    const response = await api.get("/products", {
+      params: { ...oauthParams, featured: true },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching featured products:", error.message || error);
+    throw error;
+  }
+};
 
 // Get Single Product Data 
 export const getSingleProductData = async(productID) => {

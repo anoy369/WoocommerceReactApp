@@ -110,7 +110,7 @@ function App() {
     <>
       <Router>
         <NavBar setUserLogout={setUserLogout} isAuthenticated={isAuthenticated} cartItem={cart} />
-        <div className="container h-100">
+        <div className="h-100">
           <ToastContainer />
           {loading && <Loader />}
           <Routes>
