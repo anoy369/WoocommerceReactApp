@@ -72,7 +72,6 @@ function App() {
     localStorage.setItem("cart", JSON.stringify(cart))
 
     toast.success("Product added to Cart!")
-    console.log(product)
   }
 
   //Remove from cart function
@@ -126,7 +125,6 @@ function App() {
         </div>
         <Footer />
       </Router>
-      <ToastContainer />
     </>
   );
 }
