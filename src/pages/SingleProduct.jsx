@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import productImage from "../assets/placeholder-image.jpg";
 import { useEffect, useState } from "react";
 import { getSingleProductData } from "../Api";
+import { BsCart4 } from "react-icons/bs";
 
 const SingleProduct = ({onAddToCart}) => {
   const { id } = useParams();
@@ -32,7 +33,7 @@ const SingleProduct = ({onAddToCart}) => {
 
   return (
     <>
-      <div className="container my-5">
+      <div className="container single-product-container my-5">
         <div className="row">
           <div className="col-md-6">
             <div className="card">
@@ -46,7 +47,7 @@ const SingleProduct = ({onAddToCart}) => {
             </div>
           </div>
           <div className="col-md-6">
-            <h1 className="my-4">{productDetails.name}</h1>
+            <h1>{productDetails.name}</h1>
             <div
               className="mb-4"
               dangerouslySetInnerHTML={{
@@ -55,34 +56,28 @@ const SingleProduct = ({onAddToCart}) => {
             ></div>
             <div className="mb-4">
               <h5>Price:</h5>
-              {/* <span
-                className="card-text"
-                style={{
-                  textDecoration: productDetails.sale_price
-                    ? "line-through"
-                    : "none",
-                  color: "red",
-                  "marginRight": "10px"
-                }}
-              >
-                ${productDetails.regular_price || productDetails.price}
-              </span>
-              <span
-                className="card-text"
-                style={{
-                  display: productDetails.sale_price ? "unset" : "none"
-                }}
-              >
-                ${productDetails.sale_price}
-              </span> */}
-              <p className="card-text">{renderProductPrice(productDetails)}</p>
+                <div>
+                  <span
+                    className="fw-bold"
+                    style={{
+                      textDecoration: productDetails.sale_price ? "line-through" : "none",
+                      color: productDetails.sale_price ? "red" : "black",
+                      marginRight: productDetails.sale_price ? "10px" : "0",
+                    }}
+                  >
+                    ${productDetails.regular_price || productDetails.price}
+                  </span>
+                  {productDetails.sale_price && (
+                    <span className="fw-bold text-primary">${productDetails.sale_price}</span>
+                  )}
+                </div>
             </div>
-            <div className="mb-4">
+            <div>
               <h5>
                 Category: {productDetails?.categories?.map((singleCategory) => singleCategory.name).join(", ")}
               </h5>
             </div>
-            <button className="btn btn-primary mt-4" onClick={ () => onAddToCart(SingleProduct) }>Add to Cart</button>
+            <button className="btn btn-primary mt-4" onClick={ () => onAddToCart(SingleProduct) }><BsCart4/> Add to Cart</button>
           </div>
         </div>
       </div>

@@ -67,7 +67,7 @@ const Products = ({ onAddToCart }) => {
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
-      items: 5,
+      items: 2,
     },
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
@@ -75,7 +75,7 @@ const Products = ({ onAddToCart }) => {
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
-      items: 2,
+      items: 1,
     },
     mobile: {
       breakpoint: { max: 464, min: 0 },
@@ -99,9 +99,8 @@ const Products = ({ onAddToCart }) => {
               .filter((product) => product.featured)
               .map((product) => (
                 <div key={product.id} className="p-2">
-                  <div className="card product-card h-100">
+                  <div className="card h-100 d-flex ">
                     <img
-                      className="card-img-top"
                       src={product.images[0]?.src || "/placeholder.jpg"}
                       alt={product.name}
                       style={{ height: '200px', objectFit: 'cover' }}
@@ -126,7 +125,7 @@ const Products = ({ onAddToCart }) => {
                           ${product.regular_price || product.price}
                         </span>
                         {product.sale_price && (
-                          <span className="fw-bold text-primary">${product.sale_price}</span>
+                          <span className="fw-bold">${product.sale_price}</span>
                         )}
                       </div>
                       <p className="card-text mt-2 text-muted small">
@@ -251,7 +250,7 @@ const Products = ({ onAddToCart }) => {
                             ${product.regular_price || product.price}
                           </span>
                           {product.sale_price && (
-                            <span className="fw-bold text-primary">${product.sale_price}</span>
+                            <span className="fw-bold">${product.sale_price}</span>
                           )}
                         </div>
                         <p className="text-muted small mt-1 mb-2">
