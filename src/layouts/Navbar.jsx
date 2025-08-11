@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { MdOutlineAccountCircle } from "react-icons/md";
+import { BsCartCheck } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
+
 import {
   Navbar,
   Nav,
@@ -9,8 +13,7 @@ import {
 } from 'react-bootstrap';
 import { FaShoppingCart, FaBars, FaTimes } from 'react-icons/fa';
 
-// 👉 Import custom CSS below or use inline styles
-const NavBar = ({ cartItem = [], isAuthenticated, setUserLogout, userName = "" }) => {
+const NavBar = ({ cartItem = [], isAuthenticated, setUserLogout }) => {
   const [expanded, setExpanded] = useState(false);
   const location = useLocation();
 
@@ -18,9 +21,23 @@ const NavBar = ({ cartItem = [], isAuthenticated, setUserLogout, userName = "" }
     setExpanded(false); // Collapse navbar (mobile) after click
   };
 
-  // Safely fallback to "Guest" or extract first letter
-  const displayName = userName || "User";
-  const firstLetter = displayName.trim().charAt(0).toUpperCase();
+  //Retrieve user data from localStorage
+  const getUserData = () => {
+    try {
+      const storedUserData = localStorage.getItem('user_data');
+      return storedUserData ? JSON.parse(storedUserData) : null;
+    } catch (error) {
+      console.error("Error retrieving user data from localStorage:", error);
+      return null;
+    }
+  };
+
+  // Get user data
+  const userData = getUserData();
+  const userName = userData?.name || "User"; // Fallback to "User" if name is missing
+
+  // Extract first letter for avatar
+  const firstLetter = userName.trim().charAt(0).toUpperCase();
 
   return (
     <Navbar
@@ -127,14 +144,14 @@ const NavBar = ({ cartItem = [], isAuthenticated, setUserLogout, userName = "" }
                 <Dropdown.Menu className="shadow-lg border border-light">
                   <Dropdown.Header>
                     <small className="text-muted">Signed in as</small>
-                    <div className="fw-bold">{displayName}</div>
+                    <div className="fw-bold">{userName}</div>
                   </Dropdown.Header>
                   <Dropdown.Divider />
                   <Dropdown.Item as={Link} to="/my-account" onClick={handleLinkClick}>
-                    👤 My Account
+                    <MdOutlineAccountCircle /> My Account
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/my-orders" onClick={handleLinkClick}>
-                    📦 My Orders
+                    <BsCartCheck /> My Orders
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item
@@ -144,7 +161,7 @@ const NavBar = ({ cartItem = [], isAuthenticated, setUserLogout, userName = "" }
                     }}
                     className="text-danger"
                   >
-                    🔐 Logout
+                    <FiLogOut /> Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>

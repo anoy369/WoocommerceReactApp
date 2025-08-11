@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../Api";
-import { BsCart4 } from "react-icons/bs";
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+import { BsCart4, BsSearch } from "react-icons/bs";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 const Products = ({ onAddToCart }) => {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ const Products = ({ onAddToCart }) => {
   // All products and filtered list
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // 🔍 Search state
 
   // Filters
   const [priceRange, setPriceRange] = useState([0, 1000]);
@@ -19,53 +20,53 @@ const Products = ({ onAddToCart }) => {
 
   // Fetch products and extract categories
   useEffect(() => {
-  const fetchProducts = async () => {
-    const cached = localStorage.getItem('all_products');
-    const cacheTime = localStorage.getItem('all_products_timestamp');
-    const now = Date.now();
-    const oneHour = 60 * 60 * 1000;
+    const fetchProducts = async () => {
+      try {
+        const data = await getAllProducts();
+        setProducts(data);
 
-    if (cached && cacheTime && now - parseInt(cacheTime) < oneHour) {
-      const data = JSON.parse(cached);
-      setProducts(data);
-      initializeFilters(data);
-      return;
-    }
+        // Extract unique categories
+        const categories = new Set();
+        data.forEach((product) => {
+          product.categories.forEach((cat) => categories.add(cat.name));
+        });
+        setAvailableCategories([...categories]);
 
-    try {
-      const data = await getAllProducts();
-      setProducts(data);
-      localStorage.setItem('all_products', JSON.stringify(data));
-      localStorage.setItem('all_products_timestamp', now.toString());
-      initializeFilters(data);
-    } catch (error) {
-      console.error("Failed to fetch products", error);
-    }
-  };
+        // Initially show all products
+        setFilteredProducts(data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
 
-  const initializeFilters = (data) => {
-    const categories = new Set();
-    data.forEach((product) => {
-      product.categories.forEach((cat) => categories.add(cat.name));
-    });
-    setAvailableCategories([...categories]);
-    setFilteredProducts(data);
-  };
-
-  fetchProducts();
-}, []);
-
-  // Apply filters whenever priceRange or selectedCategories change
+  // Apply all filters and search
   useEffect(() => {
     let result = [...products];
 
-    // Filter by price
+    // 🔍 Filter by search term (name, description, category)
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      result = result.filter((product) => {
+        const matchesName = product.name.toLowerCase().includes(term);
+        const matchesDesc = (product.description || "")
+          .toLowerCase()
+          .includes(term);
+        const matchesCategory = product.categories.some((cat) =>
+          cat.name.toLowerCase().includes(term)
+        );
+        return matchesName || matchesDesc || matchesCategory;
+      });
+    }
+
+    // 💵 Filter by price
     result = result.filter((product) => {
       const price = parseFloat(product.price) || 0;
       return price >= priceRange[0] && price <= priceRange[1];
     });
 
-    // Filter by category
+    // 🏷️ Filter by category
     if (selectedCategories.size > 0) {
       result = result.filter((product) =>
         product.categories.some((cat) => selectedCategories.has(cat.name))
@@ -73,7 +74,7 @@ const Products = ({ onAddToCart }) => {
     }
 
     setFilteredProducts(result);
-  }, [products, priceRange, selectedCategories]);
+  }, [products, searchTerm, priceRange, selectedCategories]);
 
   const handleSingleProductPageRedirection = (productId) => {
     navigate(`/product/${productId}`);
@@ -100,9 +101,9 @@ const Products = ({ onAddToCart }) => {
 
   return (
     <>
-      {/* Hero Section with Background Overlay */}
+      {/* Hero Section */}
       <div className="product-hero container-fluid text-center h-75 d-flex align-items-center justify-content-center">
-        <h1 className="text-white z-index-2">Products</h1>
+        <h1 className="text-white">Products</h1>
       </div>
 
       <div className="container my-5">
@@ -114,17 +115,19 @@ const Products = ({ onAddToCart }) => {
               .filter((product) => product.featured)
               .map((product) => (
                 <div key={product.id} className="p-2">
-                  <div className="card h-100 d-flex ">
+                  <div className="card h-100 d-flex">
                     <img
                       src={product.images[0]?.src || "/placeholder.jpg"}
                       alt={product.name}
-                      style={{ height: '200px', objectFit: 'cover' }}
+                      style={{ height: "200px", objectFit: "cover" }}
                     />
                     <div className="card-body d-flex flex-column align-items-center">
                       <h5
                         className="card-title"
                         style={{ cursor: "pointer" }}
-                        onClick={() => handleSingleProductPageRedirection(product.id)}
+                        onClick={() =>
+                          handleSingleProductPageRedirection(product.id)
+                        }
                       >
                         {product.name}
                       </h5>
@@ -132,7 +135,9 @@ const Products = ({ onAddToCart }) => {
                         <span
                           className="fw-bold"
                           style={{
-                            textDecoration: product.sale_price ? "line-through" : "none",
+                            textDecoration: product.sale_price
+                              ? "line-through"
+                              : "none",
                             color: product.sale_price ? "red" : "black",
                             marginRight: product.sale_price ? "10px" : "0",
                           }}
@@ -163,8 +168,33 @@ const Products = ({ onAddToCart }) => {
         <div className="row mt-5">
           {/* Filters Sidebar */}
           <div className="col-lg-3 mb-4">
+            {/* Search Bar */}
+            <div className="row mb-4">
+              <div className="mx-auto">
+                <div className="input-group">
+                  <span className="input-group-text bg-white border-end-0">
+                    <BsSearch />
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control border-start-0 ps-0"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                  {searchTerm && (
+                    <button
+                      className="btn btn-sm btn-outline-secondary"
+                      onClick={() => setSearchTerm("")}
+                      type="button"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
             <h5>Filter by</h5>
-
             {/* Price Range */}
             <div className="mb-4">
               <h6>Price Range</h6>
@@ -177,9 +207,7 @@ const Products = ({ onAddToCart }) => {
                 onChange={(e) => setPriceRange([0, Number(e.target.value)])}
                 className="form-range"
               />
-              <small className="d-block mt-1">
-                $0 - ${priceRange[1]}
-              </small>
+              <small className="d-block mt-1">$0 - ${priceRange[1]}</small>
             </div>
 
             {/* Categories */}
@@ -207,7 +235,10 @@ const Products = ({ onAddToCart }) => {
                             setSelectedCategories(newSet);
                           }}
                         />
-                        <label className="form-check-label" htmlFor={`cat-${category}`}>
+                        <label
+                          className="form-check-label"
+                          htmlFor={`cat-${category}`}
+                        >
                           {category}
                         </label>
                       </div>
@@ -223,33 +254,49 @@ const Products = ({ onAddToCart }) => {
               onClick={() => {
                 setPriceRange([0, 1000]);
                 setSelectedCategories(new Set());
+                setSearchTerm("");
               }}
             >
-              Clear Filters
+              Clear All
             </button>
           </div>
 
           {/* Product Grid */}
           <div className="col-lg-9">
-            <h2>All Products ({filteredProducts.length})</h2>
+            <h2>
+              All Products ({filteredProducts.length})
+              {searchTerm && (
+                <small className="text-muted ms-2">
+                  {" "}
+                  · Search: "{searchTerm}"
+                </small>
+              )}
+            </h2>
             {filteredProducts.length === 0 ? (
-              <p className="text-muted">No products match your filters.</p>
+              <p className="text-muted">
+                No products match your search or filters.
+              </p>
             ) : (
               <div className="row">
                 {filteredProducts.map((product) => (
-                  <div className="col-6 col-md-4 col-lg-6 col-xl-4 mb-4" key={product.id}>
+                  <div
+                    className="col-6 col-md-4 col-lg-6 col-xl-4 mb-4"
+                    key={product.id}
+                  >
                     <div className="card product-card h-100">
                       <img
                         src={product.images[0]?.src || "/placeholder.jpg"}
                         alt={product.name}
                         className="card-img-top"
-                        style={{ height: '200px', objectFit: 'cover' }}
+                        style={{ height: "200px", objectFit: "cover" }}
                       />
                       <div className="card-body d-flex flex-column">
                         <h6
                           className="card-title"
                           style={{ cursor: "pointer" }}
-                          onClick={() => handleSingleProductPageRedirection(product.id)}
+                          onClick={() =>
+                            handleSingleProductPageRedirection(product.id)
+                          }
                         >
                           {product.name}
                         </h6>
@@ -257,7 +304,9 @@ const Products = ({ onAddToCart }) => {
                           <span
                             className="fw-bold"
                             style={{
-                              textDecoration: product.sale_price ? "line-through" : "none",
+                              textDecoration: product.sale_price
+                                ? "line-through"
+                                : "none",
                               color: product.sale_price ? "red" : "black",
                               marginRight: product.sale_price ? "8px" : "0",
                             }}
@@ -265,7 +314,9 @@ const Products = ({ onAddToCart }) => {
                             ${product.regular_price || product.price}
                           </span>
                           {product.sale_price && (
-                            <span className="fw-bold">${product.sale_price}</span>
+                            <span className="fw-bold">
+                              ${product.sale_price}
+                            </span>
                           )}
                         </div>
                         <p className="text-muted small mt-1 mb-2">
