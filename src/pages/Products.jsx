@@ -19,26 +19,41 @@ const Products = ({ onAddToCart }) => {
 
   // Fetch products and extract categories
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getAllProducts();
-        setProducts(data);
+  const fetchProducts = async () => {
+    const cached = localStorage.getItem('all_products');
+    const cacheTime = localStorage.getItem('all_products_timestamp');
+    const now = Date.now();
+    const oneHour = 60 * 60 * 1000;
 
-        // Extract unique categories
-        const categories = new Set();
-        data.forEach((product) => {
-          product.categories.forEach((cat) => categories.add(cat.name));
-        });
-        setAvailableCategories([...categories]);
+    if (cached && cacheTime && now - parseInt(cacheTime) < oneHour) {
+      const data = JSON.parse(cached);
+      setProducts(data);
+      initializeFilters(data);
+      return;
+    }
 
-        // Initially show all products
-        setFilteredProducts(data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    fetchProducts();
-  }, []);
+    try {
+      const data = await getAllProducts();
+      setProducts(data);
+      localStorage.setItem('all_products', JSON.stringify(data));
+      localStorage.setItem('all_products_timestamp', now.toString());
+      initializeFilters(data);
+    } catch (error) {
+      console.error("Failed to fetch products", error);
+    }
+  };
+
+  const initializeFilters = (data) => {
+    const categories = new Set();
+    data.forEach((product) => {
+      product.categories.forEach((cat) => categories.add(cat.name));
+    });
+    setAvailableCategories([...categories]);
+    setFilteredProducts(data);
+  };
+
+  fetchProducts();
+}, []);
 
   // Apply filters whenever priceRange or selectedCategories change
   useEffect(() => {

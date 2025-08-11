@@ -93,18 +93,44 @@ api.interceptors.response.use(
 );
 
 // Get all products from woocomerce store
-export const getAllProducts = async() => {
-    try{
-        const url = `${API_URL}/products`
-        const oauthParams = generateOAuthSignature(url)
-        const response = await api.get("/products", {
-            params: oauthParams
-        })
-        return response.data
-    }catch(error){
-        console.log(error)
+export const getAllProducts = async () => {
+  let allProducts = [];
+  let page = 1;
+  const perPage = 100;
+
+  try {
+    while (true) {
+      const url = `${API_URL}/products`;
+      const oauthParams = generateOAuthSignature(url, 'GET', {
+        page,
+        per_page: perPage,
+      });
+
+      const response = await api.get("/products", {
+        params: {
+          ...oauthParams,
+          page,
+          per_page: perPage,
+        },
+      });
+
+      const products = response.data;
+
+      if (products.length === 0) break; // No more products
+
+      allProducts = [...allProducts, ...products];
+      page++;
+
+      // Optional: avoid infinite loops
+      if (products.length < perPage) break;
     }
-}
+
+    return allProducts;
+  } catch (error) {
+    console.log("Error fetching all products:", error.response?.data || error.message);
+    throw error;
+  }
+};
 
 // Get Single Product Data 
 export const getSingleProductData = async(productID) => {
