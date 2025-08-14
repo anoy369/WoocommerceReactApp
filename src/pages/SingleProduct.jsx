@@ -1,4 +1,3 @@
-// pages/SingleProduct.js
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { getSingleProductData, getVariations, getAllProducts } from "../Api";

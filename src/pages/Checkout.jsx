@@ -1,4 +1,3 @@
-// pages/Checkout.js
 import { useState } from "react";
 import { createAnOrder } from "../Api";
 import { toast } from "react-toastify";

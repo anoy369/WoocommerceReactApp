@@ -1,4 +1,3 @@
-// pages/Cart.js
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import productImage from "../assets/placeholder-image.jpg";
