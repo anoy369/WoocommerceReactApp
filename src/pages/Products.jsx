@@ -196,19 +196,60 @@ const Products = ({ onAddToCart }) => {
             </div>
             <h5>Filter by</h5>
             {/* Price Range */}
-            <div className="mb-4">
-              <h6>Price Range</h6>
-              <input
-                type="range"
-                min="0"
-                max="1000"
-                step="10"
-                value={priceRange[1]}
-                onChange={(e) => setPriceRange([0, Number(e.target.value)])}
-                className="form-range"
-              />
-              <small className="d-block mt-1">$0 - ${priceRange[1]}</small>
-            </div>
+<div className="mb-4">
+  <h6>Price Range</h6>
+
+  {/* Min Price */}
+  <div className="d-flex align-items-center mb-2">
+    <label className="small me-2" style={{ minWidth: "50px" }}>
+      Min: ${priceRange[0]}
+    </label>
+    <input
+      type="range"
+      min="0"
+      max="1000"
+      step="10"
+      value={priceRange[0]}
+      onChange={(e) => {
+        const min = Number(e.target.value);
+        // Ensure min <= max
+        if (min <= priceRange[1]) {
+          setPriceRange([min, priceRange[1]]);
+        }
+      }}
+      className="form-range flex-grow-1"
+      style={{ accentColor: "#0d6efd" }}
+    />
+  </div>
+
+  {/* Max Price */}
+  <div className="d-flex align-items-center">
+    <label className="small me-2" style={{ minWidth: "50px" }}>
+      Max: ${priceRange[1]}
+    </label>
+    <input
+      type="range"
+      min="0"
+      max="1000"
+      step="10"
+      value={priceRange[1]}
+      onChange={(e) => {
+        const max = Number(e.target.value);
+        // Ensure max >= min
+        if (max >= priceRange[0]) {
+          setPriceRange([priceRange[0], max]);
+        }
+      }}
+      className="form-range flex-grow-1"
+      style={{ accentColor: "#0d6efd" }}
+    />
+  </div>
+
+  {/* Display Range */}
+  <small className="d-block mt-2 text-muted">
+    Range: ${priceRange[0]} — ${priceRange[1]}
+  </small>
+</div>
 
             {/* Categories */}
             <div>
