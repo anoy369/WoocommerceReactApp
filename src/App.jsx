@@ -51,28 +51,27 @@ function App() {
 
 
   // Add to cart Function
-  const addProductsToCart = (product) => {
+  const addProductsToCart = (productToAdd) => {
+  const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
-    const cart = JSON.parse(localStorage.getItem("cart")) || []
+  // Check if same product AND same variation (if applicable) already in cart
+  const existingItem = cartItems.find(item => {
+    const isSameProduct = item.id === productToAdd.id;
+    const isSameVariation = !productToAdd.variation_id || item.variation_id === productToAdd.variation_id;
+    return isSameProduct && isSameVariation;
+  });
 
-    const productExists = cart.find( item => item.id === product.id )
-
-    if(productExists){
-
-      productExists.quantity += 1
-    
-    } else {  
-    
-      product.quantity = 1
-      cart.push(product)
-    
-    }    
-
-    setCart([...cart])
-    localStorage.setItem("cart", JSON.stringify(cart))
-
-    toast.success("Product added to Cart!")
+  if (existingItem) {
+    existingItem.quantity += productToAdd.quantity;
+  } else {
+    const newItem = { ...productToAdd };
+    cartItems.push(newItem);
   }
+
+  setCart([...cartItems]);
+  localStorage.setItem("cart", JSON.stringify(cartItems));
+  toast.success(`${productToAdd.quantity}x ${productToAdd.name} added to cart!`);
+};
 
   //Remove from cart function
   const removeItemsFromCart = (product) => {

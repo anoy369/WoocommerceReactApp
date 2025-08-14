@@ -99,6 +99,9 @@ export const getAllProducts = async () => {
   const perPage = 100;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     while (true) {
       const url = `${API_URL}/products`;
       const oauthParams = generateOAuthSignature(url, 'GET', {
@@ -112,22 +115,27 @@ export const getAllProducts = async () => {
           page,
           per_page: perPage,
         },
+        signal: controller.signal,
       });
 
       const products = response.data;
 
-      if (products.length === 0) break; // No more products
+      if (!products.length) break;
 
       allProducts = [...allProducts, ...products];
       page++;
 
-      // Optional: avoid infinite loops
       if (products.length < perPage) break;
     }
 
+    clearTimeout(timeoutId);
     return allProducts;
   } catch (error) {
-    console.log("Error fetching all products:", error.response?.data || error.message);
+    if (error.name === 'AbortError') {
+      console.log("Request timeout: Could not fetch all products.");
+    } else {
+      console.error("Error fetching products:", error.message);
+    }
     throw error;
   }
 };
@@ -148,6 +156,25 @@ export const getSingleProductData = async(productID) => {
     }
 }
 
+// Get all variations of a variable product
+export const getVariations = async (productId) => {
+  try {
+    const url = `${API_URL}/products/${productId}/variations`;
+    const oauthParams = generateOAuthSignature(url, 'GET', { per_page: 100 });
+
+    const response = await api.get(`/products/${productId}/variations`, {
+      params: {
+        ...oauthParams,
+        per_page: 100,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching variations:", error.response?.data || error.message);
+    throw error;
+  }
+};
 //Register user api
 export const registerStoreUser = async(userInfo) => {
 
