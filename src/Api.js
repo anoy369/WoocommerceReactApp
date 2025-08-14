@@ -168,7 +168,7 @@ export const getVariations = async (productId) => {
         per_page: 100,
       },
     });
-
+    
     return response.data;
   } catch (error) {
     console.error("Error fetching variations:", error.response?.data || error.message);

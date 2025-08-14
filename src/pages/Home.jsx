@@ -275,7 +275,7 @@ const Home = ({ onAddToCart }) => {
                 <div className="p-3">
                   <BsStarFill className="text-warning mb-2" />
                   <p className="small">{testimonial.text}</p>
-                  <footer className="text-muted">— {testimonial.name}</footer>
+                  <div className="text-muted">— {testimonial.name}</div>
                 </div>
               </div>
             ))}

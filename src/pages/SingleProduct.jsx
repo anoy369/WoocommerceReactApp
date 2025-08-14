@@ -146,45 +146,33 @@ const SingleProduct = ({ onAddToCart }) => {
 
   // Add to Cart
   const handleAddToCart = () => {
-    const isSimpleProduct = product.type === "simple";
-    const isVariableProduct = product.type === "variable";
+  if (!selectedVariation) {
+    toast.error("Please select all options.");
+    return;
+  }
 
-    // For variable products: require valid variation
-    if (isVariableProduct) {
-      if (!selectedVariation) {
-        toast.error("Please select all options.");
-        return;
-      }
-      if (selectedVariation.stock_status !== "instock") {
-        toast.error("This variation is out of stock.");
-        return;
-      }
-    }
+  if (selectedVariation.stock_status !== "instock") {
+    toast.error("This variation is out of stock.");
+    return;
+  }
 
-    // Build product to add
-    const productToAdd = isVariableProduct
-      ? {
-          ...product,
-          variation_id: selectedVariation.id,
-          name: `${product.name} - ${Object.values(selectedAttributes).join(", ")}`,
-          price: selectedVariation.price,
-          regular_price: selectedVariation.regular_price,
-          sale_price: selectedVariation.sale_price,
-          image: selectedVariation.image?.src || product.images[0]?.src,
-          quantity,
-          attributes: Object.keys(selectedAttributes).map((key) => ({
-            name: key.charAt(0).toUpperCase() + key.slice(1),
-            option: selectedAttributes[key],
-          })),
-        }
-      : {
-          ...product,
-          quantity,
-          image: product.images[0]?.src,
-        };
-
-    onAddToCart(productToAdd);
+  const productToAdd = {
+    ...product,
+    variation_id: selectedVariation.id,
+    name: `${product.name} - ${Object.values(selectedAttributes).join(", ")}`,
+    price: selectedVariation.price,
+    regular_price: selectedVariation.regular_price,
+    sale_price: selectedVariation.sale_price,
+    image: selectedVariation.image,
+    quantity,
+    attributes: Object.keys(selectedAttributes).map((key) => ({
+      name: key.charAt(0).toUpperCase() + key.slice(1),
+      option: selectedAttributes[key],
+    })),
   };
+
+  onAddToCart(productToAdd);
+};
 
   // Related Products
   const [relatedProducts, setRelatedProducts] = useState([]);

@@ -86,19 +86,18 @@ function App() {
 
   // Remove from Cart Function
   const removeItemsFromCart = (product) => {
-    if (window.confirm("Are you sure you want to remove this item from cart?")) {
-      const updatedCart = cart.filter((item) => {
-        const isSameProduct = item.id === product.id;
-        const isSameVariation =
-          !product.variation_id || item.variation_id === product.variation_id;
-        return !(isSameProduct && isSameVariation);
-      });
+  const updatedCart = cart.filter((item) => {
+    const isSameProduct = item.id === product.id;
+    const isSameVariation =
+      (item.variation_id && product.variation_id && item.variation_id === product.variation_id) ||
+      (!item.variation_id && !product.variation_id);
+    return !(isSameProduct && isSameVariation);
+  });
 
-      setCart(updatedCart);
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-      toast.success("Product removed from cart!");
-    }
-  };
+  setCart(updatedCart);
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  toast.success("Product removed from cart!");
+};
 
   // Update login status
   const setUserLoggedinStatus = (status) => {
