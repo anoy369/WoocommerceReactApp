@@ -186,7 +186,7 @@ const SingleProduct = ({ onAddToCart }) => {
                   key={idx}
                   src={img.src}
                   alt={`${product.name} ${idx + 1}`}
-                  className={`rounded border ${mainImage === img.src ? "border-primary border-2" : "border-secondary"}`}
+                  className={`singleProductThumbnail rounded border ${mainImage === img.src ? "border-primary border-2" : "border-secondary"}`}
                   style={{ height: "80px", width: "80px", objectFit: "cover", cursor: "pointer" }}
                   onClick={() => setMainImage(img.src)}
                 />
@@ -223,27 +223,54 @@ const SingleProduct = ({ onAddToCart }) => {
 
           {/* Attributes (Color, Size, etc.) */}
           {product.type === "variable" &&
-            product.attributes.map((attr) => (
-              <div className="mb-3" key={attr.id}>
-                <h6>{attr.name}</h6>
-                <div className="d-flex flex-wrap gap-2">
-                  {attr.options.map((option) => {
-                    const isActive = selectedAttributes[attr.name.toLowerCase()] === option;
-                    return (
-                      <button
-                        key={option}
-                        className={`btn btn-sm ${isActive ? "btn-primary" : "btn-outline-secondary"}`}
-                        style={{ minWidth: "80px" }}
-                        onClick={() => handleAttributeSelect(attr.name, option)}
-                        disabled={!purchasable && !isActive}
-                      >
-                        {option}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ))}
+  product.attributes.map((attr) => (
+    <div className="mb-3" key={attr.id}>
+      <h6>{attr.name}</h6>
+      <div className="d-flex flex-wrap gap-2">
+        {attr.options.map((option) => {
+          const otherAttrs = { ...selectedAttributes };
+          otherAttrs[attr.name.toLowerCase()] = option;
+
+          // Check if this option leads to any in-stock variation
+          const isAvailable = variations.some((v) =>
+            v.stock_status === "instock" &&
+            v.purchasable !== false &&
+            v.attributes.every((a) =>
+              otherAttrs[a.name.toLowerCase()]?.toLowerCase() === a.option.toLowerCase()
+            )
+          );
+
+          const isActive = selectedAttributes[attr.name.toLowerCase()] === option;
+
+          const buttonStyle = {
+            backgroundColor: attr.name.toLowerCase() === "color" ? option : undefined,
+            color: attr.name.toLowerCase() === "color" ? "#fff" : undefined,
+            opacity: isAvailable ? 1 : 0.5,
+            cursor: isAvailable ? "pointer" : "not-allowed",
+          };
+
+          return (
+            <button
+              key={option}
+              className={`btn btn-sm ${
+                isActive
+                  ? "btn-primary"
+                  : isAvailable
+                  ? "btn-outline-secondary"
+                  : "btn-outline-secondary disabled"
+              }`}
+              style={{ minWidth: "80px", minHeight: "30px", ...buttonStyle }}
+              onClick={() => isAvailable && handleAttributeSelect(attr.name, option)}
+              disabled={!isAvailable}
+              title={isAvailable ? "" : "Out of stock"}
+            >
+              {attr.name.toLowerCase() === "color" ? "" : option}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  ))}
 
           {/* Quantity */}
           <div className="d-flex align-items-center mb-4">

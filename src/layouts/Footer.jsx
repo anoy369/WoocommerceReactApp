@@ -3,26 +3,26 @@ import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="text-white pt-5 pb-4">
+    <footer className="bg-white pt-5 pb-4">
       <div className="container">
         <div className="row">
           {/* Brand Column */}
           <div className="col-md-4 mb-4">
-            <h5>StyleHub</h5>
+            <h5 className="text-dark" >StyleHub</h5>
             <p className="small text-muted">
               Premium clothing for the modern lifestyle. Quality, comfort, and timeless design.
             </p>
-            <div className="d-flex gap-3 mt-3">
-              <Link to="#" className="text-white fs-5">
+            <div className="d-flex justify-content-center gap-3 mt-3 text-center">
+              <Link to="#" className="text-dark fs-5">
                 <FaFacebook />
               </Link>
-              <Link to="#" className="text-white fs-5">
+              <Link to="#" className="text-dark fs-5">
                 <FaInstagram />
               </Link>
-              <Link to="#" className="text-white fs-5">
+              <Link to="#" className="text-dark fs-5">
                 <FaTwitter />
               </Link>
-              <Link to="#" className="text-white fs-5">
+              <Link to="#" className="text-dark fs-5">
                 <FaYoutube />
               </Link>
             </div>
@@ -30,7 +30,7 @@ const Footer = () => {
 
           {/* Shop Links */}
           <div className="col-md-2 mb-4">
-            <h6 className="text-uppercase mb-3">Shop</h6>
+            <h6 className="text-uppercase text-dark mb-3">Shop</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <Link to="/products" className="text-muted text-decoration-none small">
@@ -57,7 +57,7 @@ const Footer = () => {
 
           {/* Support Links */}
           <div className="col-md-2 mb-4">
-            <h6 className="text-uppercase mb-3">Support</h6>
+            <h6 className="text-uppercase text-dark mb-3">Support</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <Link to="/contact" className="text-muted text-decoration-none small">
@@ -84,7 +84,7 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="col-md-2 mb-4">
-            <h6 className="text-uppercase mb-3">Company</h6>
+            <h6 className="text-uppercase mb-3 text-dark">Company</h6>
             <ul className="list-unstyled">
               <li className="mb-2">
                 <Link to="/about" className="text-muted text-decoration-none small">
@@ -111,7 +111,7 @@ const Footer = () => {
 
           {/* Payment & Trust */}
           <div className="col-md-2">
-            <h6 className="text-uppercase mb-3">We Accept</h6>
+            <h6 className="text-uppercase text-dark mb-3">We Accept</h6>
             <div className="d-flex flex-wrap gap-2 mt-2">
               {["Visa", "Mastercard", "PayPal", "Apple Pay"].map((method) => (
                 <span
@@ -130,12 +130,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <hr className="my-4" />
+        <hr className="my-4 text-dark" />
         <div className="text-center small text-muted">
           &copy; {new Date().getFullYear()} StyleHub. All rights reserved.
           <br />
           Designed with by{" "}
-          <Link to="https://anoy369.com" className="text-white text-decoration-none">
+          <Link to="https://anoy369.com" className="text-dark text-decoration-none">
             anoy369
           </Link>
         </div>

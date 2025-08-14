@@ -142,6 +142,9 @@ li.react-multi-carousel-item div{
   min-height: 60vh;
 }
 
+.singleProductThumbnail:hover{
+  
+}
 
 /* Cart */
 .cart-item {
