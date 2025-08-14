@@ -113,7 +113,7 @@ function App() {
           <ToastContainer />
           {loading && <Loader />}
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home onAddToCart={addProductsToCart}/>}/>
             <Route path="/cart" element={<Cart isAuthenticated={isAuthenticated} onRemoveProduct={removeItemsFromCart} cart={cart} setCart={setCart}/>} />
             <Route path="/my-account" element={<MyAccount loggedInUserData={loggedInUserData} />} />
             <Route path="/my-orders" element={<MyOrders setLoading={setLoading} loggedInUserData={loggedInUserData} />} />

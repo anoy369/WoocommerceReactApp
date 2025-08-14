@@ -1,155 +1,146 @@
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <>
-        <footer
-          className="text-center text-lg-start text-white"
-          style={{"backgroundColor": "#3e4551"}}
-        >
-          <div className="container p-4 pb-0">
-            <section className="">
-              <div className="row">
-                <div className="col-lg-4 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">FOOTER CONTENT</h5>
-
-                  <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Molestiae modi cum ipsam ad, illo possimus laborum ut
-                    reiciendis obcaecati. Ducimus, quas. Corrupti, pariatur
-                    eaque? Reiciendis assumenda iusto sapiente inventore animi?
-                  </p>
-                </div>
-                <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">Links</h5>
-
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 2
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 3
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 4
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">Links</h5>
-
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 2
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 3
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 4
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">Links</h5>
-
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 2
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 3
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 4
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-                <div className="col-lg-2 col-md-6 mb-4 mb-md-0">
-                  <h5 className="text-uppercase">Links</h5>
-
-                  <ul className="list-unstyled mb-0">
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 2
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 3
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/" className="text-white">
-                        Link 4
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </section>
-
-            <hr className="mb-4" />
-            <section className="">
-              <p className="d-flex justify-content-center align-items-center">
-                <span className="me-3">Register for free</span>
-                <button type="button" className="btn btn-outline-light btn-rounded">
-                  Sign up!
-                </button>
-              </p>
-            </section>
-
-            <hr className="mb-4" />
+    <footer className="text-white pt-5 pb-4">
+      <div className="container">
+        <div className="row">
+          {/* Brand Column */}
+          <div className="col-md-4 mb-4">
+            <h5>StyleHub</h5>
+            <p className="small text-muted">
+              Premium clothing for the modern lifestyle. Quality, comfort, and timeless design.
+            </p>
+            <div className="d-flex gap-3 mt-3">
+              <Link to="#" className="text-white fs-5">
+                <FaFacebook />
+              </Link>
+              <Link to="#" className="text-white fs-5">
+                <FaInstagram />
+              </Link>
+              <Link to="#" className="text-white fs-5">
+                <FaTwitter />
+              </Link>
+              <Link to="#" className="text-white fs-5">
+                <FaYoutube />
+              </Link>
+            </div>
           </div>
-          <div
-            className="text-center p-3"
-            style={{"backgroundColor": "rgba(0, 0, 0, 0.2)"}}
-          >
-            © 2025 Copyright:
-            <Link className="text-white" to="https://anoy369.com/">
-              anoy369.com
-            </Link>
+
+          {/* Shop Links */}
+          <div className="col-md-2 mb-4">
+            <h6 className="text-uppercase mb-3">Shop</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <Link to="/products" className="text-muted text-decoration-none small">
+                  All Products
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/products?featured=true" className="text-muted text-decoration-none small">
+                  Featured
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/products?on_sale=true" className="text-muted text-decoration-none small">
+                  Sale
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/products" className="text-muted text-decoration-none small">
+                  New Arrivals
+                </Link>
+              </li>
+            </ul>
           </div>
-        </footer>
-    </>
+
+          {/* Support Links */}
+          <div className="col-md-2 mb-4">
+            <h6 className="text-uppercase mb-3">Support</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <Link to="/contact" className="text-muted text-decoration-none small">
+                  Contact Us
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/faq" className="text-muted text-decoration-none small">
+                  FAQ
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/shipping" className="text-muted text-decoration-none small">
+                  Shipping
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/returns" className="text-muted text-decoration-none small">
+                  Returns
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick Links */}
+          <div className="col-md-2 mb-4">
+            <h6 className="text-uppercase mb-3">Company</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2">
+                <Link to="/about" className="text-muted text-decoration-none small">
+                  About Us
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/blog" className="text-muted text-decoration-none small">
+                  Blog
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/careers" className="text-muted text-decoration-none small">
+                  Careers
+                </Link>
+              </li>
+              <li className="mb-2">
+                <Link to="/privacy" className="text-muted text-decoration-none small">
+                  Privacy Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Payment & Trust */}
+          <div className="col-md-2">
+            <h6 className="text-uppercase mb-3">We Accept</h6>
+            <div className="d-flex flex-wrap gap-2 mt-2">
+              {["Visa", "Mastercard", "PayPal", "Apple Pay"].map((method) => (
+                <span
+                  key={method}
+                  className="badge bg-dark text-white px-2 py-1"
+                  style={{ fontSize: "0.7rem", borderRadius: "4px" }}
+                >
+                  {method}
+                </span>
+              ))}
+            </div>
+            <p className="mt-3 small text-muted">
+              Secure payments with industry-leading encryption.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <hr className="my-4" />
+        <div className="text-center small text-muted">
+          &copy; {new Date().getFullYear()} StyleHub. All rights reserved.
+          <br />
+          Designed with by{" "}
+          <Link to="https://anoy369.com" className="text-white text-decoration-none">
+            anoy369
+          </Link>
+        </div>
+      </div>
+    </footer>
   );
 };
 
