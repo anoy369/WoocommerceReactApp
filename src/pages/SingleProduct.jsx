@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getSingleProductData, getVariations, getAllProducts } from "../Api";
 import { BsCart4, BsStarFill, BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { toast } from "react-toastify";
@@ -15,6 +15,10 @@ const SingleProduct = ({ onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [mainImage, setMainImage] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [lensX, setLensX] = useState(0);
+  const [lensY, setLensY] = useState(0);
+  const imageContainerRef = useRef(null);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -54,6 +58,39 @@ const SingleProduct = ({ onAddToCart }) => {
 
     fetchProductData();
   }, [id, navigate]);
+  //Handle zoom effect on image
+  const handleZoomIn = () => {
+  setIsZoomed(true);
+};
+
+const handleZoomOut = () => {
+  setIsZoomed(false);
+};
+
+const handleImageZoom = (e) => {
+  if (!isZoomed) return;
+
+  const container = imageContainerRef.current;
+  const { left, top, width, height } = container.getBoundingClientRect();
+
+  const x = e.clientX - left;
+  const y = e.clientY - top;
+
+  // Normalize to 0–1
+  const percentX = x / width;
+  const percentY = y / height;
+
+  // Set lens position
+  setLensX(x);
+  setLensY(y);
+
+  // Apply pan effect to zoomed image
+  const img = container.querySelector("img");
+  if (img) {
+    img.style.transformOrigin = `${percentX * 100}% ${percentY * 100}%`;
+    img.style.transform = "scale(2)";
+  }
+};
 
   // Match selected attributes to a variation
   const matchVariation = (attrs, variationList) => {
@@ -164,12 +201,40 @@ const SingleProduct = ({ onAddToCart }) => {
         {/* Image Gallery */}
         <div className="col-md-6">
           <div className="position-relative mb-3">
-            <img
-              src={mainImage || "/placeholder.jpg"}
-              alt={product.name}
-              className="img-fluid rounded shadow-sm"
-              style={{ height: "500px", objectFit: "contain", backgroundColor: "#f8f9fa" }}
-            />
+            <div
+  className="position-relative rounded shadow-sm overflow-hidden"
+  style={{ height: "500px", backgroundColor: "#f8f9fa", cursor: "none" }}
+  onMouseMove={handleImageZoom}
+  onMouseEnter={handleZoomIn}
+  onMouseLeave={handleZoomOut}
+  ref={imageContainerRef}
+>
+  {/* Main Image */}
+  <img
+    src={mainImage || "/placeholder.jpg"}
+    alt={product.name}
+    className="img-fluid w-100 h-100"
+    style={{
+      objectFit: "cover",
+      transition: "transform 0.2s ease",
+      transform: isZoomed ? "scale(2)" : "scale(1)",
+    }}
+  />
+
+  {/* Zoom Lens Overlay (optional visual indicator) */}
+  {isZoomed && (
+    <div
+      style={{
+        position: "absolute",
+        width: "100%",
+        height: "100%",
+        background: `radial-gradient(circle at ${lensX}px ${lensY}px, transparent 10%, rgba(0,0,0,0.1))`,
+        pointerEvents: "none",
+        zIndex: 1,
+      }}
+    />
+  )}
+</div>
             {product.featured && (
               <span className="position-absolute top-0 start-0 bg-danger text-white px-3 py-1 m-2 small rounded">Featured</span>
             )}
