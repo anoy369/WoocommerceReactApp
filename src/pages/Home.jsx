@@ -182,7 +182,7 @@ const Home = ({ onAddToCart }) => {
                 <div>
                   <h3 className="h4">Mid-Season Sale</h3>
                   <p style={{ fontSize: "0.9rem" }}>
-                    Up to 50% off selected items.
+                    Up to 75% off selected items.
                   </p>
                   <button
                     className="btn btn-sm btn-light"
