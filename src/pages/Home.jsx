@@ -76,7 +76,7 @@ const Home = ({ onAddToCart }) => {
             Discover the season’s most loved styles. Elegance, comfort, and
             confidence in every stitch.
           </p>
-          <div className="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+          <div className="d-flex flex-column flex-sm-row gap-3 align-items-center justify-content-center">
             <button
               className="btn btn-light btn-lg px-4 d-flex align-items-center justify-content-center"
               onClick={handleShopNow}
@@ -297,7 +297,7 @@ const Home = ({ onAddToCart }) => {
             Subscribe to get updates on new collections, exclusive offers, and
             style tips.
           </p>
-          <div className="d-flex flex-column flex-sm-row gap-2 justify-content-center">
+          <div className="d-flex flex-column flex-sm-row gap-2 align-items-center justify-content-center">
             <input
               type="email"
               placeholder="Your email address"
