@@ -48,3 +48,25 @@ body.dark-mode .btn-outline-light:hover {
   background-color: #e2e8f0;
   color: #1a202c;
 }
+
+/* Add to index.css */
+@media (prefers-color-scheme: dark) {
+  body.dark-mode .navbar {
+    background-color: #1a202c !important;
+    border-color: #4a5568;
+  }
+  body.dark-mode .navbar .nav-link,
+  body.dark-mode .navbar .text-dark {
+    color: #e2e8f0 !important;
+  }
+  body.dark-mode .dropdown-menu {
+    background-color: #2d3748;
+    border: 1px solid #4a5568;
+  }
+  body.dark-mode .dropdown-item {
+    color: #e2e8f0;
+  }
+  body.dark-mode .dropdown-item:hover {
+    background-color: #4a5568;
+  }
+}
