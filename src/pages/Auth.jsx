@@ -114,7 +114,7 @@ const Auth = ({isAuthenticated, setLoggedInUserData}) => {
 
   return (
     <>
-      <div className="container">
+      <div className="container pb-lg-5">
         <div className="toast-container"></div>
         <h1 className="my-4 text-center">Login / Signup</h1>
         <div className="row">

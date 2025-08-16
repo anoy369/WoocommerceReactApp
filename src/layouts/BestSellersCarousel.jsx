@@ -78,7 +78,7 @@ const BestSellersCarousel = ({ products = [], onAddToCart }) => {
 
   return (
     <section className="my-5">
-      <h2 className="mb-4">Best Sellers</h2>
+      <h2 className="mb-4 text-center">Best Sellers</h2>
       <Carousel
         responsive={responsive}
         infinite
