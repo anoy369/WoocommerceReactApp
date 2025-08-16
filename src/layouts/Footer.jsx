@@ -112,7 +112,7 @@ const Footer = () => {
           {/* Payment & Trust */}
           <div className="col-md-2">
             <h6 className="text-uppercase text-dark mb-3">We Accept</h6>
-            <div className="d-flex flex-wrap gap-2 mt-2">
+            <div className="d-flex align-items-center justify-content-center flex-wrap gap-2 mt-2">
               {["Visa", "Mastercard", "PayPal", "Apple Pay"].map((method) => (
                 <span
                   key={method}
