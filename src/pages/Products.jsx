@@ -1,4 +1,3 @@
-// pages/Products.js
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAllProducts } from "../Api";
