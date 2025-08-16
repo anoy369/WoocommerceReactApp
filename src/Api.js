@@ -92,6 +92,36 @@ api.interceptors.response.use(
   }
 );
 
+//Get Currency
+export const getStoreCurrency = async () => {
+  try {
+    const response = await fetch(
+      `${API_URL}/settings/general/woocommerce_currency?consumer_key=${CONSUMER_KEY}&consumer_secret=${CONSUMER_SECRET}`
+    );
+    const data = await response.json();
+    return data.value;
+  } catch (error) {
+    console.error("Failed to fetch currency", error);
+    return "USD";
+  }
+};
+
+// Optional: Get currency symbol
+export const getCurrencySymbol = (currencyCode) => {
+  const symbols = {
+    USD: "$",
+    EUR: "€",
+    GBP: "£",
+    CAD: "C$",
+    AUD: "A$",
+    INR: "₹",
+    JPY: "¥",
+    BDT: "৳",
+    // Add more as needed
+  };
+  return symbols[currencyCode] || currencyCode;
+};
+
 // Get all products from woocomerce store
 export const getAllProducts = async () => {
   let allProducts = [];

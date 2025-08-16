@@ -1,14 +1,17 @@
-// components/BestSellersCarousel.js
 import { useState, useEffect } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { BsCart4 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
+import { useCurrency } from "../hooks/useCurrency";
+
 const BestSellersCarousel = ({ products = [], onAddToCart }) => {
   const navigate = useNavigate();
   const [bestSellers, setBestSellers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const { symbol } = useCurrency();
 
   useEffect(() => {
     if (!Array.isArray(products) || products.length === 0) {
@@ -120,11 +123,11 @@ const BestSellersCarousel = ({ products = [], onAddToCart }) => {
                       fontSize: "0.95rem",
                     }}
                   >
-                    ${parseFloat(product.regular_price || product.price).toFixed(2)}
+                    { symbol }{parseFloat(product.regular_price || product.price).toFixed(2)}
                   </span>
                   {product.sale_price && (
                     <span className="fw-bold ms-2">
-                      ${parseFloat(product.sale_price).toFixed(2)}
+                      { symbol }{parseFloat(product.sale_price).toFixed(2)}
                     </span>
                   )}
                 </div>

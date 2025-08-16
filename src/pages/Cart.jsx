@@ -3,8 +3,12 @@ import { FiPlusCircle, FiMinusCircle, FiTrash2 } from "react-icons/fi";
 import { Button, Table } from "react-bootstrap";
 import swal from "sweetalert";
 
+import { useCurrency } from "../hooks/useCurrency";
+
 const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
   const navigate = useNavigate();
+
+  const { symbol } = useCurrency();
 
   // Calculate total price
   const calculateTotal = () => {
@@ -113,11 +117,28 @@ const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
     } else {
       swal({
         title: "Login Required",
-        text: "You need to log in to proceed to checkout.",
+        text: "Please login or sign up to proceed to checkout.",
         icon: "info",
-        buttons: "OK",
-      }).then(() => {
-        navigate("/login");
+        buttons: {
+          cancel: {
+            text: "Not now",
+            visible: true,
+            className: "btn-secondary"
+          },
+          confirm: {
+            text: "Login Now",
+            className: "btn-primary"
+          }
+        },
+        customClass: {
+          confirmButton: 'btn',
+          cancelButton: 'btn'
+        },
+        closeOnClickOutside: true
+      }).then((loginNow) => {
+        if (loginNow) {
+          navigate("/login");
+        }
       });
     }
   };
@@ -197,7 +218,7 @@ const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
                     </div>
                   </div>
                 </td>
-                <td>${parseFloat(product.price).toFixed(2)}</td>
+                <td>{ symbol }{parseFloat(product.price).toFixed(2)}</td>
                 <td className="text-center">
                   <div className="d-flex align-items-center justify-content-center gap-2">
                     <Button
@@ -224,7 +245,7 @@ const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
                     </Button>
                   </div>
                 </td>
-                <td className="fw-bold">${itemTotal}</td>
+                <td className="fw-bold">{ symbol }{itemTotal}</td>
                 <td className="text-center">
                   <Button
                     variant="outline-danger"
@@ -251,7 +272,7 @@ const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
                 Subtotal ({cart.reduce((sum, item) => sum + item.quantity, 0)}{" "}
                 items)
               </span>
-              <strong>${calculateTotal()}</strong>
+              <strong>{ symbol }{calculateTotal()}</strong>
             </div>
             <div className="d-flex justify-content-between mb-2 text-muted">
               <span>Shipping</span>
@@ -260,12 +281,11 @@ const Cart = ({ onRemoveProduct, cart, isAuthenticated, setCart }) => {
             <hr />
             <div className="d-flex justify-content-between fs-5">
               <strong>Total</strong>
-              <strong>${calculateTotal()}</strong>
+              <strong>{ symbol }{calculateTotal()}</strong>
             </div>
             <Button
               size="lg"
               className="w-100 mt-3"
-              disabled={!isAuthenticated}
               onClick={goToCheckoutPage}
             >
               Proceed to Checkout

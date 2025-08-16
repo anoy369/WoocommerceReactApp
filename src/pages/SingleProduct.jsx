@@ -5,10 +5,12 @@ import { BsCart4, BsStarFill, BsChevronLeft, BsChevronRight } from "react-icons/
 import { toast } from "react-toastify";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { useCurrency } from "../hooks/useCurrency";
 
 const SingleProduct = ({ onAddToCart }) => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { symbol } = useCurrency();
 
   const [product, setProduct] = useState(null);
   const [variations, setVariations] = useState([]);
@@ -317,7 +319,7 @@ const SingleProduct = ({ onAddToCart }) => {
 
           {/* Price */}
           <div className="mb-3">
-            <h4 className="fw-bold">${parseFloat(currentPrice).toFixed(2)}</h4>
+            <h4 className="fw-bold">{ symbol }{parseFloat(currentPrice).toFixed(2)}</h4>
           </div>
 
           {/* SKU */}
@@ -400,7 +402,7 @@ const SingleProduct = ({ onAddToCart }) => {
               ? "Out of Stock"
               : !isPurchasable
               ? "Select Options"
-              : `Add to Cart - $${(currentPrice * quantity).toFixed(2)}`
+              : `Add to Cart - ${ symbol }${(currentPrice * quantity).toFixed(2)}`
             }
           </button>
 

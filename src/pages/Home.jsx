@@ -5,9 +5,13 @@ import { getAllProducts } from "../Api";
 import { BsArrowRight, BsCart4, BsStarFill } from "react-icons/bs";
 import BestSellersCarousel from "../layouts/BestSellersCarousel";
 
+import { useCurrency } from "../hooks/useCurrency";
+
 const Home = ({ onAddToCart }) => {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+
+  const { symbol } = useCurrency();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -232,7 +236,7 @@ const Home = ({ onAddToCart }) => {
                         {product.categories.map((c) => c.name).join(", ")}
                       </p>
                       <div className="d-flex align-items-center mt-auto">
-                        <span className="fw-bold">${product.price}</span>
+                        <span className="fw-bold">{ symbol }{product.price}</span>
                       </div>
                       <button
                         className="btn btn-outline-primary btn-sm mt-3"
