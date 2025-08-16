@@ -1,0 +1,50 @@
+body.dark-mode {
+  background-color: #1a202c;
+  color: #e2e8f0;
+}
+
+body.dark-mode .card {
+  background-color: #2d3748 !important;
+  border: none;
+  color: #e2e8f0;
+}
+
+body.dark-mode .form-control {
+  background-color: #4a5568 !important;
+  color: #e2e8f0 !important;
+  border-color: #4a5568 !important;
+}
+
+body.dark-mode .form-control::placeholder, body.dark-mode nav a {
+  color: #a0aec0!important;
+}
+
+body.dark-mode .table td, body.dark-mode .table th, body.dark-mode footer, body.dark-mode footer h5, body.dark-mode footer h6, body.dark-mode footer a, body.dark-mode footer div,  body.dark-mode footer hr,
+ body.dark-mode nav, body.dark-mode nav .dropdown-menu,  body.dark-mode nav small
+{
+  color: #e2e8f0!important;
+  background: #1a202c!important;
+}
+
+body.dark-mode footer{
+    border-top: 1px solid #e2e8f0;
+}
+
+body.dark-mode p, body.dark-mode span, body.dark-mode .breadcrumb button, body.dark-mode .breadcrumb button::before{
+  color: #e2e8f0!important;
+}
+
+body.dark-mode .alert {
+  background-color: #4a5568;
+  color: #e2e8f0;
+}
+
+body.dark-mode .btn-outline-light {
+  color: #e2e8f0;
+  border-color: #e2e8f0;
+}
+
+body.dark-mode .btn-outline-light:hover {
+  background-color: #e2e8f0;
+  color: #1a202c;
+}

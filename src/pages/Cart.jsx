@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import productImage from "../assets/placeholder-image.jpg";
 import { FiPlusCircle, FiMinusCircle, FiTrash2 } from "react-icons/fi";
 import { Button, Table } from "react-bootstrap";
 import swal from "sweetalert";
