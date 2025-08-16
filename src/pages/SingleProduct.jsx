@@ -242,7 +242,7 @@ const SingleProduct = ({ onAddToCart }) => {
         </ol>
       </nav>
 
-      <div className="row g-5">
+      <div className="row">
         {/* Image Gallery */}
         <div className="col-md-6">
           <div className="position-relative mb-3">
@@ -287,7 +287,7 @@ const SingleProduct = ({ onAddToCart }) => {
 
             {/* Thumbnails */}
             {product.images.length > 1 && (
-              <div className="d-flex gap-2 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+              <div className="d-flex gap-2 overflow-x-auto pb-2 mt-1" style={{ scrollbarWidth: "none" }}>
                 {product.images.map((img, idx) => (
                   <img
                     key={idx}
@@ -479,7 +479,7 @@ const SingleProduct = ({ onAddToCart }) => {
                           color: p.sale_price ? "#dc3545" : "black",
                         }}
                       >
-                        ${parseFloat(p.regular_price || p.price).toFixed(2)}
+                        { symbol }{parseFloat(p.regular_price || p.price).toFixed(2)}
                       </span>
                       {p.sale_price && (
                         <span className="fw-bold ms-2">${parseFloat(p.sale_price).toFixed(2)}</span>

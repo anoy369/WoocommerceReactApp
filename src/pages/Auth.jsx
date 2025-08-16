@@ -118,7 +118,7 @@ const Auth = ({isAuthenticated, setLoggedInUserData}) => {
         <div className="toast-container"></div>
         <h1 className="my-4 text-center">Login / Signup</h1>
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 mb-5">
             <h2>Login</h2>
             <form onSubmit={handleLoginFormSubmit}>
               <div className="mb-3">
